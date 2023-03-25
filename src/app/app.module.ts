@@ -1,30 +1,34 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from "@angular/forms";
-import {RouterModule, Routes} from "@angular/router";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import {AppComponent} from './app.component';
-import {SignUpFormComponent} from './sign-up-form/sign-up-form.component';
-import {SignInFormComponent} from './sign-in-form/sign-in-form.component';
+import {SignUpFormComponent} from './components/sign-up-form/sign-up-form.component';
+import {SignInFormComponent} from './components/sign-in-form/sign-in-form.component';
+import {ChatComponent} from './components/chat/chat.component';
+import {AppRoutingModule} from "./modules/app-routing/app-routing.module";
+import {AuthInterceptorService} from "./services/auth-interceptor.service";
 
 
-const appRoutes:Routes = [
-  {path: "", redirectTo:"/auth/sign-in", pathMatch:"full"},
-  {path: "auth/sign-in", component: SignInFormComponent},
-  {path: "auth/sign-up", component: SignUpFormComponent},
-]
 @NgModule({
   declarations: [
     AppComponent,
     SignUpFormComponent,
-    SignInFormComponent
+    SignInFormComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    HttpClientModule,
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

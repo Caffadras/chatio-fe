@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-sign-up-form',
@@ -14,11 +15,11 @@ export class SignUpFormComponent {
     "username": ["", Validators.required],
     "password": ["", Validators.required]
   });
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
   }
 
   onSubmit(): void{
-      console.log("Submited");
-      console.log(this.form);
+
   }
+
 }
