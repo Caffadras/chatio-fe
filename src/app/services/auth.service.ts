@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {SignInDto, Token} from "../domain/interfaces";
+import {SignInDto, SignUpDto, Token} from "../domain/interfaces";
 import {catchError, map, Observable, of} from "rxjs";
+import {ApiEndpoints} from "../domain/api-endpoints";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  url: string = "http://localhost:8080";
   signupHeaders: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'
   })
@@ -18,10 +18,10 @@ export class AuthService {
   }
 
   signIn(credentials: SignInDto): Observable<Token> {
-    let signInUrl = this.url + "/sign-in";
+    let signInUrl = ApiEndpoints.URL + ApiEndpoints.SIGN_IN;
     return this.http.post<Token>(signInUrl, JSON.stringify(credentials), {headers: this.signupHeaders}).pipe(
       catchError((error) => {
-        if ( error.status === 401 ) {
+        if (error.status === 401) {
           throw new Error('Unauthenticated');
         }
         throw new Error(error);
@@ -29,8 +29,29 @@ export class AuthService {
     );
   }
 
-  isLoggedIn(): Observable<boolean>{
-    return this.http.get(this.url + "/logCheck").pipe(map(() => true), catchError(() => of(false)));
+  private translateException(error: any): Error {
+    if (error.status === 401) {
+      throw new Error('Unauthenticated');
+    }
+    throw new Error(error);
+
+  }
+
+  signUp(credentials: SignUpDto): Observable<Token> {
+    let signUpUrl = ApiEndpoints.URL + ApiEndpoints.SIGN_UP;
+    return this.http.post<Token>(signUpUrl, JSON.stringify(credentials), {headers: this.signupHeaders}).pipe(
+      catchError(error => {
+        if (error.status === 401) {
+          throw new Error('Unauthenticated');
+        }
+        throw new Error(error);
+      })
+    );
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    let logCheckUrl = ApiEndpoints.URL + ApiEndpoints.LOG_CHECK;
+    return this.http.get(logCheckUrl).pipe(map(() => true), catchError(() => of(false)));
   }
 
 }

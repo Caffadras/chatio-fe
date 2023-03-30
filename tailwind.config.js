@@ -4,7 +4,13 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'send-ico-hover': '#dcdcdc',
+        'send-ico': '#7a7a7b',
+      },
+    },
+
   },
   plugins: [],
 }
