@@ -18,7 +18,8 @@
           <span class="text-sm text-gray-400">10 members</span>
         </div>
       </div>
-      <div id="messages_area" class="mb-4 flex-1 overflow-y-auto px-4">
+      <div id="messages_area"
+           class="mb-4 flex-1 overflow-y-auto px-4">
         <!-- Message from someone else -->
         <div class="mb-2 flex items-end">
           <img
@@ -33,7 +34,7 @@
               <p class="font-bold">User Name</p>
               <p class="text-[15px]">Message content</p>
               <span class="absolute bottom-1 right-3 text-sm text-gray-300"
-                >14:30</span
+              >14:30</span
               >
             </div>
           </div>
@@ -64,18 +65,22 @@
                 quis imperdiet sollicitudin.
               </p>
               <span class="absolute bottom-1 right-3 text-sm text-gray-300"
-                >14:30</span
+              >14:30</span
               >
             </div>
           </div>
         </div>
 
         <!-- Your message -->
-        <app-message [contents]="'123'"></app-message>
-        <app-message [contents]="'Some contents'"></app-message>
+        <div *ngFor="let message of receivedMessages">
+          <app-message [contents]="message.contents"
+                       [currentUserId]="currentUserId"
+                       [senderId]="message.sender.id"></app-message>
+        </div>
       </div>
       <div class="relative px-4">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form"
+              (ngSubmit)="onSubmit()">
           <input
             type="text"
             placeholder="Type your message here..."

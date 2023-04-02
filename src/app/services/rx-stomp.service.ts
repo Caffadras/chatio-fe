@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {IMessage, RxStomp} from "@stomp/rx-stomp";
 import {AuthService} from "./auth.service";
 import {ApiEndpoints} from "../domain/api-endpoints";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
+import {ChatMessage, SendChatMessageDto} from "../domain/interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,11 @@ export class RxStompService extends RxStomp {
     super();
   }
 
-  public send(message: string) {
+  public send(message: SendChatMessageDto) {
     if (!this.connected()) {
       this.connect();
     }
-    this.publish({destination: ApiEndpoints.SEND_QUEUE, body: message});
+    this.publish({destination: ApiEndpoints.SEND_QUEUE, body: JSON.stringify(message)});
   }
 
   public connect() {
@@ -33,10 +34,15 @@ export class RxStompService extends RxStomp {
     super.activate();
   }
 
-  public subscribeToQueue(): Observable<IMessage> {
+  public subscribeToQueue(): Observable<ChatMessage> {
     if (!this.connected()) {
       this.connect();
     }
-    return this.watch(ApiEndpoints.LISTEN_QUEUE);
+    return this.watch(ApiEndpoints.LISTEN_QUEUE).pipe(
+      map( (message: IMessage) => {
+        console.log(message.body);
+        return JSON.parse(message.body);
+      }
+    ));
   }
 }

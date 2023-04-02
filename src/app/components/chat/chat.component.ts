@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {RxStompService} from "../../services/rx-stomp.service";
-import {Message} from "@stomp/stompjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ChatMessage} from "../../domain/interfaces";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-chat',
@@ -16,18 +17,20 @@ export class ChatComponent implements OnInit {
     input: ['', Validators.required]
   });
 
-  receivedMessages: string[] = [];
+  receivedMessages: ChatMessage[] = [];
+  currentUserId: number = -1;
 
-  constructor(private fb: FormBuilder, private rxStompService: RxStompService) {
+  constructor(private fb: FormBuilder, private rxStompService: RxStompService, private authService: AuthService) {
   }
 
   ngOnInit(): void {
     this.rxStompService.subscribeToQueue().subscribe(this.onMessageReceived.bind(this));
+    this.currentUserId = this.authService.getCurrentUserId() ?? -1;
   }
 
-  private onMessageReceived(message: Message) {
-    this.receivedMessages.push(message.body);
-    console.log(message.body);
+  private onMessageReceived(message: ChatMessage) {
+    this.receivedMessages.push(message);
+
   }
 
   onSubmit() {
@@ -35,9 +38,8 @@ export class ChatComponent implements OnInit {
     if (!message) {
       return;
     }
-    console.log(123);
     this.form.patchValue({input: ''});
-    this.rxStompService.send(message);
+    this.rxStompService.send({contents: message, sender: this.currentUserId});
   }
 
 }
