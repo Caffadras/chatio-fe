@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {SignInDto, SignUpDto, Token} from "../domain/interfaces";
 import {catchError, map, Observable, of} from "rxjs";
 import {ApiEndpoints} from "../domain/api-endpoints";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
   })
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   signIn(credentials: SignInDto): Observable<Token> {
@@ -52,6 +53,14 @@ export class AuthService {
   isLoggedIn(): Observable<boolean> {
     let logCheckUrl = ApiEndpoints.URL + ApiEndpoints.LOG_CHECK;
     return this.http.get(logCheckUrl).pipe(map(() => true), catchError(() => of(false)));
+  }
+
+  getToken(): string | null{
+    const token = localStorage.getItem("jwtToken");
+    if (!token){
+      void this.router.navigate(["/auth/sign-in"]);
+    }
+    return token;
   }
 
 }

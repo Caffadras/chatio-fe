@@ -9,6 +9,10 @@ import {SignInFormComponent} from './components/sign-in-form/sign-in-form.compon
 import {ChatComponent} from './components/chat/chat.component';
 import {AppRoutingModule} from "./modules/app-routing/app-routing.module";
 import {AuthInterceptorService} from "./services/auth-interceptor.service";
+import {RxStompService} from "./services/rx-stomp.service";
+import {rxStompServiceFactory} from "./services/rs-stomp-service-factory";
+import {MessageComponent} from './components/message/message.component';
+import {AuthService} from "./services/auth.service";
 
 
 @NgModule({
@@ -17,6 +21,7 @@ import {AuthInterceptorService} from "./services/auth-interceptor.service";
     SignUpFormComponent,
     SignInFormComponent,
     ChatComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,6 +33,10 @@ import {AuthInterceptorService} from "./services/auth-interceptor.service";
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
+  }, {
+    provide: RxStompService,
+    useFactory: rxStompServiceFactory,
+    deps: [AuthService]
   }],
   bootstrap: [AppComponent]
 })

@@ -3,10 +3,10 @@
     class="container mx-auto flex h-screen items-center justify-center sm:py-[1rem]"
   >
     <div
-      class="flex h-full w-full flex-col sm:rounded-lg bg-gray-800 pb-4 shadow-lg md:w-1/2"
+      class="flex h-full w-full flex-col bg-gray-800 pb-4 shadow-lg sm:rounded-lg md:w-1/2"
     >
       <div
-        class="mb-4 flex items-center sm:rounded-tr-lg sm:rounded-tl-lg bg-slate-600 px-[1rem] py-2"
+        class="mb-4 flex items-center bg-slate-600 px-[1rem] py-2 sm:rounded-tr-lg sm:rounded-tl-lg"
       >
         <img
           src="https://cdn-icons-png.flaticon.com/512/8633/8633608.png"
@@ -71,39 +71,37 @@
         </div>
 
         <!-- Your message -->
-        <div class="mb-2 text-right">
-          <div
-            class="relative inline-block max-w-[75%] rounded-lg bg-blue-500 pr-[2rem] pl-3 pt-2 pb-[1.25rem] text-white"
-          >
-            Your message content
-            <span class="absolute bottom-1 right-3 text-sm text-gray-200"
-              >15:45</span
-            >
-          </div>
-        </div>
+        <app-message [contents]="'123'"></app-message>
+        <app-message [contents]="'Some contents'"></app-message>
       </div>
       <div class="relative px-4">
-        <input
-          type="text"
-          placeholder="Type your message here..."
-          class="w-full rounded-lg bg-gray-700 py-2 pl-4 pr-12 text-white focus:outline-none"
-        />
-        <button class="absolute top-1/2 right-4 -translate-y-1/2 transform">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="mr-4 h-6 w-6 stroke-[#7a7a7b] hover:stroke-[#dcdcdc]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <input
+            type="text"
+            placeholder="Type your message here..."
+            id="input"
+            formControlName="input"
+            class="w-full rounded-lg bg-gray-700 py-2 pl-4 pr-12 text-white focus:outline-none"
+          />
+          <button
+            class="absolute top-1/2 right-4 -translate-y-1/2 transform"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-            />
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="mr-4 h-6 w-6 stroke-[#7a7a7b] hover:stroke-[#dcdcdc]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+          </button>
+        </form>
       </div>
     </div>
   </div>
