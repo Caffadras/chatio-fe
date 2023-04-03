@@ -40,8 +40,9 @@ export class RxStompService extends RxStomp {
     }
     return this.watch(ApiEndpoints.LISTEN_QUEUE).pipe(
       map( (message: IMessage) => {
-        console.log(message.body);
-        return JSON.parse(message.body);
+        const parsed:ChatMessage = JSON.parse(message.body);
+        //console.log(parsed.messageType);
+        return parsed;
       }
     ));
   }

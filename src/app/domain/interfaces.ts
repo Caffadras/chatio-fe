@@ -15,11 +15,14 @@ export interface ChatMessage{
   contents: string;
   sender: UserProfile;
   timestamp: string;
+  messageType: MessageType;
 }
 
+export enum MessageType{
+  CHAT = "CHAT", JOIN = "JOIN"
+}
 export interface SendChatMessageDto{
   contents: string;
-  sender: number;
 }
 
 export interface UserProfile{

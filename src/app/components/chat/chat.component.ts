@@ -39,7 +39,7 @@ export class ChatComponent implements OnInit {
       return;
     }
     this.form.patchValue({input: ''});
-    this.rxStompService.send({contents: message, sender: this.currentUserId});
+    this.rxStompService.send({contents: message});
   }
 
 }

@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {ChatMessage, MessageType} from "../../domain/interfaces";
 
 @Component({
   selector: 'app-message',
@@ -7,7 +8,16 @@ import {Component, Input} from '@angular/core';
 })
 export class MessageComponent{
 
-  @Input() contents?: string;
   @Input() currentUserId?: number;
-  @Input() senderId?: number;
+  @Input() message?: ChatMessage;
+
+  public formatTime(timestamp: string | undefined): string{
+    if (!timestamp) return '';
+    const date: Date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
+  protected readonly MessageType = MessageType;
 }

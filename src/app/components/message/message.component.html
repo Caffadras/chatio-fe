@@ -1,32 +1,42 @@
-<!-- Message from someone else -->
-<div *ngIf="currentUserId != senderId" class="mb-2 flex items-end">
-  <img
-    src="https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
-    alt="user"
-    class="h-8 w-8 rounded-full"
-  />
-  <div class="ml-2 max-w-[75%]">
+<div *ngIf="message?.messageType == MessageType.CHAT"><!-- Message from someone else -->
+  <div *ngIf="currentUserId != message?.sender?.id"
+       class="mb-2 flex items-end">
+    <img
+      src="https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
+      alt="user"
+      class="h-8 w-8 rounded-full"
+    />
+    <div class="ml-2 max-w-[75%]">
+      <div
+        class="relative rounded-lg bg-gray-600 pr-[2rem] pl-3 pt-2 pb-[1.25rem] text-white"
+      >
+        <p class="font-bold">{{message?.sender?.username}}</p>
+        <p class="text-[15px] break-words">{{message?.contents}}</p>
+        <span class="absolute bottom-1 right-3 text-sm text-gray-300"
+        >{{formatTime(message?.timestamp)}}</span
+        >
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Your message -->
+  <div *ngIf="currentUserId == message?.sender?.id"
+       class="mb-2 text-right">
     <div
-      class="relative rounded-lg bg-gray-600 pr-[2rem] pl-3 pt-2 pb-[1.25rem] text-white"
+      class="relative inline-block max-w-[75%] rounded-lg bg-blue-500 pr-[2rem] pl-3 pt-2 pb-[1.25rem] text-white"
     >
-      <p class="font-bold">User Name</p>
-      <p class="text-[15px] break-words">{{contents}}</p>
-      <span class="absolute bottom-1 right-3 text-sm text-gray-300"
-      >14:30</span
+      <p class="break-words">{{message?.contents}}</p>
+      <span class="absolute bottom-1 right-3 text-sm text-gray-200"
+      >{{formatTime(message?.timestamp)}}</span
       >
     </div>
   </div>
 </div>
 
-
-<!-- Your message -->
-<div *ngIf="currentUserId == senderId" class="mb-2 text-right">
-  <div
-    class="relative inline-block max-w-[75%] rounded-lg bg-blue-500 pr-[2rem] pl-3 pt-2 pb-[1.25rem] text-white"
-  >
-    <p class="break-words">{{contents}}</p>
-    <span class="absolute bottom-1 right-3 text-sm text-gray-200"
-    >15:45</span
-    >
+<!--If someone has entered the chat-->
+<div *ngIf="message?.messageType == MessageType.JOIN;">
+  <div class="flex justify-center items-center mt-[1rem] mb-[1rem]">
+    <p class="text-white bg-gray-700 px-4 py-1 rounded-2xl">{{message?.sender?.username}} has joined the chat</p>
   </div>
 </div>
