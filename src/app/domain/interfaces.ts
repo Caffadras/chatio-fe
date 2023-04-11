@@ -35,3 +35,9 @@ export interface UserProfile{
 export interface Token{
   token: string;
 }
+
+export interface Chat{
+  chatId: number,
+  chatName: string;
+  membersCount: number;
+}

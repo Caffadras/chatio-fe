@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {SignInDto, SignUpDto, Token} from "../domain/interfaces";
+import {ChatMessage, SignInDto, SignUpDto, Token} from "../domain/interfaces";
 import {catchError, map, Observable, of} from "rxjs";
 import {ApiEndpoints} from "../domain/api-endpoints";
 import {Router} from "@angular/router";
@@ -76,4 +76,8 @@ export class AuthService {
     return decodedToken.userId;
   }
 
+  loadMessages():Observable<ChatMessage[]>{
+    const url: string = ApiEndpoints.URL + ApiEndpoints.GET_MESSAGES;
+    return this.http.get<ChatMessage[]>(url);
+  }
 }

@@ -30,7 +30,7 @@ export class RxStompService extends RxStomp {
       return;
     }
     console.log('Token cloned: ' + token);
-    super.configure({connectHeaders: {Authorization: `Bearer ${token}`}, reconnectDelay: 1000});
+    super.configure({connectHeaders: {Authorization: `Bearer ${token}`}});
     super.activate();
   }
 

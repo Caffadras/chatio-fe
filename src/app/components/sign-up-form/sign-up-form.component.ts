@@ -32,12 +32,7 @@ export class SignUpFormComponent {
     }
 
     this.authService.signUp(signUpDto).subscribe({
-      next: (token: Token) => {
-        console.log('SIGNUP: ' + JSON.stringify(token));
-        localStorage.setItem('jwtToken', token.token);
-        this.failedSignUp = false;
-        void this.router.navigate(['/chat']);
-      },
+      next: this.onSuccessfulSignIn.bind(this),
       error: (error: Error) => {
         if (error.message === 'Unauthenticated') {
           console.log('Unauthenticated');
@@ -48,4 +43,10 @@ export class SignUpFormComponent {
 
   }
 
+  private onSuccessfulSignIn(token: Token){
+    console.log('SIGNUP: ' + JSON.stringify(token));
+    localStorage.setItem('jwtToken', token.token);
+    this.failedSignUp = false;
+    void this.router.navigate(['/chat']);
+  }
 }
